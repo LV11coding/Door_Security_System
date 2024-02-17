@@ -11,3 +11,15 @@ Jumper wires - https://www.amazon.com/Elegoo-EL-CP-004-Multicolored-Breadboard-a
 LCD display - https://www.amazon.com/SunFounder-Serial-Module-Display-Arduino/dp/B019K5X53O/ref=sr_1_4?crid=2OK7ZWO1XFL7P&dib=eyJ2IjoiMSJ9.MWRYL3aywzp39AgcJj10H6el9PfAEy2oqV7t83r-XdBHxeJcNOwwtVMOyz3Lv_CRXwCO0C07A0nIWKL_GpLMbtnBydzxntkcET8VXu6mc2vqtOsabApTP3LrONeBX0lDeofTZQTcOXjFFwotR7Ip-wsRX-vwywddo9I0JodGotrJEvtNQU__DaNf_sIXPobOyGkZUyzFGcS1dfrJNNvu-i6qnIxMxtdXVr7qpc8FELdxcwCnCqrWrVSMhGl0rvXD1dDDSHFdfzVLSTw_oc9GWN3c21eVY2Xz7jYSQ4qb9p8._OjXyK1EkWw_i6nFtWSAndx5QvDp-sPTEIo0pUbpj5A&dib_tag=se&keywords=LCD+Display+Module+1602+16x02+IIC%2FI2C&qid=1708170258&sprefix=lcd+display+module+1602+16x02+iic%2Fi2c%2Caps%2C190&sr=8-4
 
 RGB LED - https://www.amazon.com/EDGELEC-Tri-Color-Multicolor-Diffused-Resistors/dp/B077XGF3YR/ref=sr_1_4?crid=2ZOGDK1EUAZQA&dib=eyJ2IjoiMSJ9.cj1Rrn3LpZbidJPVqHeDUeM4LT_0dOHSgVvngtK4uSU9zVUJzksPPMYeqO8WziS5ubZ5zVaXMCGqk3VOa3_zkXAQhQkVBXM3tlsLAqGRBff4ErqVLSpIcGZxSmUq-upxYmJmbRF1FzoQtWkqYSjbVYR9itbawCt-SYgsOTRxgKhvtjF3-9kRx8VR886CIiHJNquwyT3JCvn5erAHRLTnK_191SAzCn5KssVa6zICNn8.IsteXs11NuTocydKp54bNu04kThgTGsckxb7_-eW_bA&dib_tag=se&keywords=RGB+5mm+Diffused+LED&qid=1708170296&sprefix=rgb+5mm+diffused+led%2Caps%2C229&sr=8-4
+
+
+Instructions:
+Use 10KOhm for the button and 3 220Ohm for the LED.
+1. Soldier I2C module to the display and connect the module to Arduino. If the backlight on the display doesn't lit up check the solder joints.
+2. Connect the LED pins to the corresponding pins: red - 2; green - 3; blue - 4.
+3. Connect the button with the 10KOhm resistor to the 5 pin.
+4. Connect the buzzer to the 7 pin.
+5. Connect the RFID sensor. SS - 10 pin, RST - 9 pin.
+
+   IMPORTANT:
+   Make sure that you set the String MasterTag to the card that is by default the correct one. You can do this by scanning your card. It will show you the card tag in the Serial monitor. Set your card tag to the String MasterTag.
