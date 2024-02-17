@@ -12,6 +12,10 @@ LCD display - https://www.amazon.com/SunFounder-Serial-Module-Display-Arduino/dp
 
 RGB LED - https://www.amazon.com/EDGELEC-Tri-Color-Multicolor-Diffused-Resistors/dp/B077XGF3YR/ref=sr_1_4?crid=2ZOGDK1EUAZQA&dib=eyJ2IjoiMSJ9.cj1Rrn3LpZbidJPVqHeDUeM4LT_0dOHSgVvngtK4uSU9zVUJzksPPMYeqO8WziS5ubZ5zVaXMCGqk3VOa3_zkXAQhQkVBXM3tlsLAqGRBff4ErqVLSpIcGZxSmUq-upxYmJmbRF1FzoQtWkqYSjbVYR9itbawCt-SYgsOTRxgKhvtjF3-9kRx8VR886CIiHJNquwyT3JCvn5erAHRLTnK_191SAzCn5KssVa6zICNn8.IsteXs11NuTocydKp54bNu04kThgTGsckxb7_-eW_bA&dib_tag=se&keywords=RGB+5mm+Diffused+LED&qid=1708170296&sprefix=rgb+5mm+diffused+led%2Caps%2C229&sr=8-4
 
+Needed libraries for the code:
+SPI.h - https://github.com/PaulStoffregen/SPI/blob/master/SPI.h
+MFRC522.h - https://github.com/miguelbalboa/rfid
+LiquidCrystal_I2C.h - https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library
 
 Instructions:
 Use 10KOhm for the button and 3 220Ohm for the LED.
