@@ -1,0 +1,152 @@
+#include <SPI.h>
+#include <MFRC522.h>
+#define SS_PIN 10
+#define RST_PIN 9
+#define buzzer 7
+#define button 5
+byte readCard[4];
+String MasterTag = "FC36149";  // Default correct card
+String tagID = "";
+MFRC522 mfrc522(SS_PIN, RST_PIN);
+
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 20, 4);
+
+int redPin = 2;
+int greenPin = 3;
+int bluePin = 4;
+int buttonState = 0;
+int prebuttonState = 0;
+bool IsPressed = false;
+
+enum State {
+  BUTTON_NOT_PRESSED,
+  BUTTON_PRESSED,
+  EDIT_STATE
+};
+
+State currentState = BUTTON_NOT_PRESSED;
+
+bool test = true;
+
+void setup() {
+  pinMode(redPin,  OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  Serial.begin(9600);
+  pinMode(buzzer, OUTPUT);
+  SPI.begin();
+  mfrc522.PCD_Init();
+  delay(4);
+  mfrc522.PCD_DumpVersionToSerial();
+  Serial.println("--------------------------");
+  Serial.println(" Access Control ");
+  Serial.println("Scan Your Card>>");
+
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(1, 0);
+  lcd.print("Scan your card!");
+}
+
+void loop() {
+  buttonState = digitalRead(button);
+
+  if (buttonState != prebuttonState) {
+    delay(50);
+    if (buttonState == HIGH) {
+      IsPressed = !IsPressed;
+
+      if (IsPressed) {
+        currentState = EDIT_STATE;
+        setColor(0, 0, 255);
+        lcd.clear();
+        lcd.print("Edit Mode");
+        delay(2000);
+        lcd.clear();
+      } else {
+        currentState = BUTTON_NOT_PRESSED;
+        setColor(0, 0, 0);  // Reset LED color
+        lcd.clear();
+        lcd.print("Scan your card!");
+      }
+    }
+  }
+
+  prebuttonState = buttonState;
+
+  switch (currentState) {
+    case BUTTON_NOT_PRESSED:
+      if (test) {
+        while (getID()) {
+          if (tagID == MasterTag) {
+            lcd.clear();
+            lcd.print("Access Granted");
+            tone(buzzer, 1000);
+            setColor(0, 255, 0);
+            delay(2000);
+            noTone(buzzer);
+            setColor(0, 0, 0);
+            Serial.println(tagID);
+            lcd.clear();
+          } else {
+            lcd.clear();
+            lcd.print("Access Denied");
+            setColor(255, 0, 0);
+            noBuzzer();
+            delay(2000);
+            setColor(0, 0, 0);
+            Serial.println(tagID);
+            lcd.clear();
+          }
+          lcd.print("Scan your card!");
+        }
+      }
+      break;
+
+    case EDIT_STATE:
+      if (getID()) {
+        MasterTag = tagID;  // Set MasterTag to the new card's value
+        lcd.clear();
+        lcd.print("New card set");
+        delay(2000);
+        lcd.clear();
+        currentState = BUTTON_NOT_PRESSED;
+        setColor(0, 0, 0);  // Reset LED color
+        lcd.print("Scan your card!");
+      }
+      break;
+  }
+}
+
+boolean getID() {
+  if (!mfrc522.PICC_IsNewCardPresent()) {
+    return false;
+  }
+  if (!mfrc522.PICC_ReadCardSerial()) {
+    return false;
+  }
+  tagID = "";
+  for (uint8_t i = 0; i < 4; i++) {
+    tagID.concat(String(mfrc522.uid.uidByte[i], HEX));
+  }
+  tagID.toUpperCase();
+  mfrc522.PICC_HaltA();
+  return true;
+}
+
+void setColor(int redValue, int greenValue, int blueValue) {
+  analogWrite(redPin, redValue);
+  analogWrite(greenPin, greenValue);
+  analogWrite(bluePin, blueValue);
+}
+
+void noBuzzer() {
+  tone(buzzer, 500);
+  delay(350);
+  noTone(buzzer);
+  delay(150);
+  tone(buzzer, 500);
+  delay(350);
+  noTone(buzzer);
+}
